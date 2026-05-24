@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F4FFF4;
+  --surface: #FFFFFF;
+  --primary: #2E7D32;
+  --secondary: #66BB6A;
+  --accent: #D4AF37;
+  --earth: #6D4C41;
+  --leaf: #81C784;
+  --sky: #E8F5E9;
+  --ink: #102010;
+  --muted: #5F6F5F;
+
+  /* Custom Glow/Cinematic variables */
+  --glow-green: rgba(74, 222, 128, 0.15);
+  --glow-gold: rgba(212, 175, 55, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-dark: rgba(16, 32, 16, 0.85);
+  --glass-border: rgba(46, 125, 50, 0.15);
+  --glass-border-light: rgba(255, 255, 255, 0.3);
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-earth: var(--earth);
+  --color-leaf: var(--leaf);
+  --color-sky: var(--sky);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-poppins), sans-serif;
+  --font-editorial: var(--font-playfair), serif;
+
+  --animate-float-slow: float-slow 15s ease-in-out infinite;
+  --animate-float-medium: float-medium 8s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+  --animate-drift-leaf: drift-leaf 20s linear infinite;
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes float-medium {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(-3deg); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+  }
+  @keyframes drift-leaf {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translate(400px, 600px) rotate(360deg); opacity: 0; }
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #F4FFF4;
+}
+::-webkit-scrollbar-thumb {
+  background: #2E7D32;
+  border-radius: 5px;
+  border: 2px solid #F4FFF4;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1B5E20;
+}
+
+/* Hide default cursor on desktop when custom cursor is active */
+@media (min-width: 1024px) {
+  .custom-cursor-active {
+    cursor: none;
+  }
+  .custom-cursor-active a, 
+  .custom-cursor-active button,
+  .custom-cursor-active [role="button"] {
+    cursor: none;
+  }
+}
+
+html {
+  scroll-behavior: auto; /* Managed by Lenis */
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Cinematic Effects & Utility Classes */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(46, 125, 50, 0.12);
+}
+
+.glassmorphism-dark {
+  background: rgba(16, 32, 16, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cinematic-glow {
+  position: relative;
+}
+.cinematic-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, #2E7D32, #D4AF37, #66BB6A, #2E7D32);
+  background-size: 400% 400%;
+  z-index: -1;
+  filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  border-radius: inherit;
+  animation: glow-rotate 8s linear infinite;
+}
+.cinematic-glow:hover::after {
+  opacity: 0.7;
+}
+
+@keyframes glow-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.text-reveal-clip {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.fog-overlay {
+  background: linear-gradient(to top, rgba(244, 255, 244, 0) 0%, rgba(244, 255, 244, 0.8) 50%, rgba(244, 255, 244, 1) 100%);
+  pointer-events: none;
+}
+
+/* ThreeJS container style */
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Ensure interactive elements in ThreeJS can be clicked */
+.canvas-interactive {
+  pointer-events: auto !important;
+}
